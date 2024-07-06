@@ -18,7 +18,7 @@ const carouselImages = [
   },
 ];
 
-const Carousel = () => {
+const Carousel = ({ styleContent }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
@@ -46,11 +46,14 @@ const Carousel = () => {
         style={{ transform: `translateX(-${currentIndex * 105}%)` }}
       >
         {carouselImages.map((image, index) => (
-          <div key={index} className="relative w-full flex-shrink-0">
+          <div
+            key={index}
+            className={`relative w-full flex-shrink-0 h-32 ${styleContent}`}
+          >
             <img
               src={image.src}
               alt={`Slide ${index + 1}`}
-              className="w-full h-32 object-cover rounded-3xl"
+              className="w-full h-full object-cover rounded-3xl"
             />
             <div className="absolute top-4 left-4 text-white">
               <h1 className="text-lg font-bold shadow-md">{image.caption}</h1>
