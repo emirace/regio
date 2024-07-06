@@ -47,7 +47,6 @@ function Posts() {
   const navigate = useNavigate();
   return (
     <>
-      <Outlet />
       <DrawerModal2 left={"md:left-[15rem] h-full"}>
         <div className="bg-white">
           <Carousel />
@@ -107,6 +106,7 @@ function Posts() {
           </div>
         </div>
       </DrawerModal2>
+      <Outlet />
     </>
   );
 }
