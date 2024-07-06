@@ -1,10 +1,6 @@
 import React from "react";
 import DrawerModal2 from "../../../components/Modals/DrawerModal2";
-import { IoHeartSharp, IoLocationSharp } from "react-icons/io5";
 import { FaClock, FaFilter } from "react-icons/fa";
-import { IoMdCloseCircle } from "react-icons/io";
-import "owl.carousel/dist/assets/owl.carousel.css";
-import "owl.carousel/dist/assets/owl.theme.default.css";
 import Carousel from "../../../components/posts/Carousel";
 import SearchInput from "../../../components/SearchInput";
 import { ImNewspaper } from "react-icons/im";
