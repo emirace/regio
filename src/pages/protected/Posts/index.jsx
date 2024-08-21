@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import DrawerModal2 from "../../../components/Modals/DrawerModal2";
 import { FaClock, FaFilter } from "react-icons/fa";
 import Carousel from "../../../components/posts/Carousel";
@@ -7,6 +7,8 @@ import { ImNewspaper } from "react-icons/im";
 import { BsEye, BsStars } from "react-icons/bs";
 import { MdMyLocation } from "react-icons/md";
 import { Outlet, useNavigate } from "react-router-dom";
+import { usePosts } from "../../../contexts/Post";
+import moment from "moment/moment";
 
 const newsItems = [
   {
@@ -41,6 +43,11 @@ const newsItems = [
 
 function Posts() {
   const navigate = useNavigate();
+  const { posts, fetchPosts, loading } = usePosts();
+
+  useEffect(() => {
+    fetchPosts();
+  }, []);
   return (
     <>
       <DrawerModal2 left={"md:left-[15rem] h-full"}>
@@ -77,23 +84,23 @@ function Posts() {
           </div>
 
           <div className="overflow-y-auto h-[calc(100vh-350px)]  scrollbar-hide">
-            {newsItems.map((item, index) => (
+            {posts.map((item, index) => (
               <div
                 key={index}
                 className="flex items-center border-b py-4 cursor-pointer"
-                onClick={() => navigate("sample")}
+                onClick={() => navigate(`${item.id}`)}
               >
                 <img
-                  src={item.img}
-                  alt={item.title}
+                  src={item.images[0].image}
+                  alt={item.headline}
                   className="w-16 h-16 rounded-lg mr-4"
                 />
                 <div className="flex-1">
-                  <h3 className="text-lg font-semibold">{item.title}</h3>
-                  <p className="text-gray-500 text-xs">{item.description}</p>
+                  <h3 className="text-lg font-semibold">{item.headline}</h3>
+                  <p className="text-gray-500 text-xs">{item.content}</p>
                   <div className="flex items-center text-sm text-gray-500">
                     <p className="text-xs">
-                      {item.author} • {item.location} • {item.time}
+                      {item.author_name} • {moment(item.created_at).calendar()}
                     </p>
                   </div>
                 </div>

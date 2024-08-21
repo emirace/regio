@@ -1,15 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
 import AuthImage from "../../assets/auth.jpg";
 import Select from "../../components/auth/Select";
 import { BsThreeDots } from "react-icons/bs";
-import { FaLocationDot } from "react-icons/fa6";
+import OptionModel from "../../components/Modals/OptionModal";
 
 function Auth() {
+  const [showModel, setShowModel] = useState(false);
   return (
     <div className="bg-primary flex justify-center items-center h-screen">
       <div className="flex z-20 items-center justify-between md:justify-end gap-5 absolute top-5 left-5 md:left-auto right-5">
-        <BsThreeDots className="bg-white rounded-full p-2 border" size={42} />
+        {/* <BsThreeDots
+          className="bg-white rounded-full p-2 border"
+          size={42}
+          onClick={() => setShowModel(true)}
+        /> */}
+        <OptionModel
+          isOpen={showModel}
+          onClose={() => setShowModel(false)}
+          button={
+            <BsThreeDots
+              className="bg-white rounded-full p-2 border"
+              size={42}
+              onClick={() => setShowModel(true)}
+            />
+          }
+        >
+          <div>options</div>
+          <div>options</div>
+          <div>options</div>
+        </OptionModel>
         <div className="flex items-center gap-5 ">
           <Select />
           <Select />

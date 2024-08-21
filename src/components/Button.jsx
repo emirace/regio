@@ -13,7 +13,7 @@ const Button = ({
       type={type}
       onClick={onClick}
       disabled={disabled}
-      className={`cursor-pointer disabled:opacity-80 disabled:bg-gray-400 text-white capitalize text-16 p-2
+      className={`cursor-pointer flex items-center justify-center gap-5 disabled:opacity-80 disabled:bg-gray-400 text-white capitalize text-16 p-2
       rounded-[5px] bg-primary border-none hover:bg-malon-color ${className}`}
     >
       {isLoading && <Spinner />}

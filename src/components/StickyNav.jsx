@@ -30,7 +30,7 @@ const sidebarLinks = [
     activeIcon: <FaRectangleList size={30} />,
   },
   {
-    path: "/map",
+    path: "/",
     text: "Location",
     icon: <IoLocationOutline size={30} />,
     activeIcon: <IoLocationSharp size={30} />,
@@ -55,6 +55,7 @@ const StickyNav = () => {
               `items-center flex flex-col grow justify-center min-w-[50px] relative whitespace-nowrap text-primary `
             }
             end={link.end}
+            key={link.path}
           >
             {({ isActive }) => (
               <>

@@ -5,14 +5,15 @@ import TextInput from "../../../components/TextInput";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "../../../components/Button";
 import { TbReload } from "react-icons/tb";
+import useAuth from "../../../hooks/auth";
 
 function ForgotPassword() {
   const navigate = useNavigate();
+  const { requestResetEmail } = useAuth();
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
     email: "",
     password: "",
+    code: "",
     confirmPassword: "",
     termsAccepted: false,
   });
@@ -57,7 +58,11 @@ function ForgotPassword() {
               value={formData.email}
               onChange={handleChange}
               iconComponent={
-                <Button className="p-1 rounded-full" disabled>
+                <Button
+                  className="p-1 rounded-full"
+                  onClick={() => requestResetEmail({ email: formData.email })}
+                  disabled={!formData.email}
+                >
                   Code anfordern
                 </Button>
               }
@@ -81,7 +86,11 @@ function ForgotPassword() {
 
               <label className="text-sm">Passwort zurucksetzen</label>
             </div>
-            <Button disabled type="submit" className="w-full rounded-lg">
+            <Button
+              disabled={formData.code.length < 6}
+              type="submit"
+              className="w-full rounded-lg"
+            >
               Code anmeldung
             </Button>
           </form>

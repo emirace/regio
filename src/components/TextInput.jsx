@@ -6,6 +6,7 @@ const TextInput = ({
   name,
   value,
   onChange,
+  error,
   iconComponent: IconComponent,
   ...props
 }) => {
@@ -18,7 +19,9 @@ const TextInput = ({
           name={name}
           value={value}
           onChange={onChange}
-          className={`w-full px-3 border-b bg-transparent border-gray-300 focus:outline-none focus:border-primary ${
+          className={`w-full px-3 border-b bg-transparent ${
+            error ? "border-red-500" : "border-gray-300"
+          } focus:outline-none focus:border-primary ${
             IconComponent ? "pr-10" : ""
           }`}
           {...props}
@@ -26,6 +29,7 @@ const TextInput = ({
         <div className="absolute right-3 top-2 text-gray-400">
           {IconComponent}
         </div>
+        {error && <div className="text-red-500 text-xs">{error}</div>}
       </div>
     </div>
   );

@@ -1,29 +1,29 @@
-import React from "react";
-import { FaLocationDot } from "react-icons/fa6";
-import { Link, Outlet, useNavigate } from "react-router-dom";
-import Button from "./components/Button";
+import { Navigate } from "react-router-dom";
+import { useUsers } from "./contexts/User";
 
-function App() {
-  return (
-    <div className="bg-primary flex flex-col gap-10 justify-center items-center h-screen">
-      <div className="absolute top-5 left-10 text-4xl font-bold text-white">
-        Regio
+const App = ({ element }) => {
+  const { user, loading } = useUsers();
+  if (loading) {
+    return (
+      <div className="bg-primary flex flex-col gap-10 justify-center items-center h-screen">
+        <div className="absolute top-5 left-10 text-4xl font-bold text-white">
+          Regio
+        </div>
+        <img
+          className="w-14 animate-bounce "
+          src="/images/logo.png"
+          alt="logo"
+        />
+        <div className="text-white">Loading...</div>
       </div>
-      <FaLocationDot className="text-white animate-bounce text-6xl" />
-      <Link
-        to={"/auth/register"}
-        className="text-lg font-medium p-2 px-4 rounded-md bg-white text-[#013d3d] "
-      >
-        Start now
-      </Link>
-      <Link
-        to={"/map"}
-        className="text-lg font-medium p-2 px-4 rounded-md bg-white text-[#013d3d] "
-      >
-        Goto Map
-      </Link>
-    </div>
-  );
-}
+    );
+  }
+
+  if (!user) {
+    return <Navigate to="/auth/register" replace />;
+  }
+
+  return element;
+};
 
 export default App;

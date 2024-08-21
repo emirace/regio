@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DrawerModal from "../../components/Modals/DrawerModal";
 import DrawerModal2 from "../../components/Modals/DrawerModal2";
 import { Link } from "react-router-dom";
 import SearchInput from "../../components/SearchInput";
 import { FaClock, FaFilter, FaRegListAlt, FaTruck } from "react-icons/fa";
 import { IoHeartSharp, IoLocationSharp, IoPricetag } from "react-icons/io5";
-import { IoMdClose } from "react-icons/io";
+import { IoMdClose, IoMdCloseCircle } from "react-icons/io";
 import { SiHomeassistantcommunitystore } from "react-icons/si";
 import { ImNewspaper } from "react-icons/im";
 import { BsFillGridFill } from "react-icons/bs";
+import { useUsers } from "../../contexts/User";
 
 const favourites = [
   {
@@ -60,7 +61,12 @@ const favourites = [
 ];
 
 function Favourite() {
+  const { fetchUserFavorites, favorites } = useUsers();
   const [isGrid, setIsGrid] = useState(false);
+
+  useEffect(() => {
+    fetchUserFavorites();
+  }, []);
   return (
     <DrawerModal2
       left={"md:left-[15rem] h-full"}
@@ -111,127 +117,137 @@ function Favourite() {
             : "md:grid md:grid-cols-4"
         } w-full  md:gap-5 `}
       >
-        {favourites.map((item, index) => {
-          return item.type === "product" ? (
-            <div
-              key={index}
-              className={`${
-                isGrid ? "" : "flex"
-              } overflow-hidden items-center gap-2 py-2 border-b relative `}
-            >
-              <img
-                src={item.img}
-                alt={item.name}
-                className={`${
-                  isGrid ? "w-full h-32" : "w-16 h-16 mr-4"
-                } rounded-lg `}
-              />
-              <div className="flex-1 md:flex-auto ">
-                <div className="flex w-full overflow-hidden items-center justify-between">
-                  <div
-                    className={`${
-                      isGrid ? "text-base" : "text-lg"
-                    } font-semibold  w-3/4 overflow-hidden text-ellipsis whitespace-nowrap`}
-                  >
-                    {item.name}
-                  </div>
-                </div>
-                <div className="text-sm text-gray-500">{item.location}</div>
-                <div className="flex items-center gap-1 text-sm text-gray-500">
-                  <div className="mr-2 text-xs flex items-center gap-1">
-                    {item.weight}
-                  </div>
-                  <div className="flex text-xs items-center gap-1">
-                    {item.price}
-                  </div>
-                  <div className="flex text-xs items-center text-green-400 gap-1">
-                    {item.status}
-                  </div>
-                </div>
-              </div>
+        {favourites.length < 1 ? (
+          <div className="h-full w-full flex justify-center items-center p-20">
+            No favourites
+          </div>
+        ) : (
+          favorites.map((item, index) => {
+            return item.content_type !== "Seller | seller" ? (
               <div
-                className={`absolute cursor-pointer bg-white rounded-full p-1 ${
-                  isGrid ? " top-3 right-1" : "top-1/2 -translate-y-1/2 right-5"
-                }`}
-              >
-                <IoMdClose />
-              </div>
-            </div>
-          ) : (
-            <div
-              key={index}
-              className={`${
-                isGrid ? "" : "flex"
-              } overflow-hidden items-center gap-2 py-2 border-b relative `}
-            >
-              <img
-                src={item.img}
-                alt={item.name}
+                key={index}
                 className={`${
-                  isGrid ? "w-full h-32" : "w-16 h-16 mr-4"
-                } rounded-lg `}
-              />
-              <div className="flex-grow">
-                <div className="flex items-center w-3/4 ">
-                  <div
-                    className={`${
-                      isGrid ? "text-base" : "text-lg"
-                    } font-semibold w-full  overflow-hidden text-ellipsis whitespace-nowrap`}
-                  >
-                    {item.name}
-                  </div>
-                  <div className="bg-red-500 text-white py-0.5 px-1.5 rounded-full text-xs">
-                    {item.count}
-                  </div>
-                </div>
-                <p className="text-sm text-gray-500 overflow-hidden whitespace-nowrap text-ellipsis">
-                  {item.type} • {item.location}
-                </p>
-                <div className="flex text-xs items-center  text-gray-500">
-                  <div className="mr-2 flex items-center gap-1 ">
-                    <IoHeartSharp
-                      size={isGrid ? 12 : 18}
-                      color={item.liked ? "red" : "black"}
-                    />
-                    <div className="overflow-hidden whitespace-nowrap text-ellipsis">
-                      {item.likes}
+                  isGrid ? "" : "flex"
+                } overflow-hidden items-center gap-2 py-2 border-b relative `}
+              >
+                <img
+                  src={item.img}
+                  alt={item.name}
+                  className={`${
+                    isGrid ? "w-full h-32" : "w-16 h-16 mr-4"
+                  } rounded-lg `}
+                />
+                <div className="flex-1 md:flex-auto ">
+                  <div className="flex w-full overflow-hidden items-center justify-between">
+                    <div
+                      className={`${
+                        isGrid ? "text-base" : "text-lg"
+                      } font-semibold  w-3/4 overflow-hidden text-ellipsis whitespace-nowrap`}
+                    >
+                      {item.name}
                     </div>
                   </div>
-                  <div className="flex text-xs items-center gap-1">
-                    <IoLocationSharp size={isGrid ? 12 : 18} color="black" />
-                    <div className="overflow-hidden whitespace-nowrap text-ellipsis">
-                      {item.distance}
+                  <div className="text-sm text-gray-500">{item.location}</div>
+                  <div className="flex items-center gap-1 text-sm text-gray-500">
+                    <div className="mr-2 text-xs flex items-center gap-1">
+                      {item.weight}
                     </div>
-                  </div>
-
-                  <div
-                    className={`text-xs flex items-center gap-1 ml-2 ${
-                      item.status === "Geöffnet"
-                        ? "text-green-500"
-                        : "text-red-500"
-                    }`}
-                  >
-                    {item.status === "Geöffnet" ? (
-                      <FaClock size={isGrid ? 12 : 18} />
-                    ) : (
-                      <IoMdCloseCircle size={isGrid ? 12 : 18} />
-                    )}
-                    <div className="overflow-hidden whitespace-nowrap text-ellipsis">
+                    <div className="flex text-xs items-center gap-1">
+                      {item.price}
+                    </div>
+                    <div className="flex text-xs items-center text-green-400 gap-1">
                       {item.status}
                     </div>
                   </div>
                 </div>
+                <div
+                  className={`absolute cursor-pointer bg-white rounded-full p-1 ${
+                    isGrid
+                      ? " top-3 right-1"
+                      : "top-1/2 -translate-y-1/2 right-5"
+                  }`}
+                >
+                  <IoMdClose />
+                </div>
               </div>
+            ) : (
               <div
-                className={`absolute cursor-pointer bg-white rounded-full p-1 ${
-                  isGrid ? " top-3 right-1" : "top-1/2 -translate-y-1/2 right-5"
-                }`}
+                key={index}
+                className={`${
+                  isGrid ? "" : "flex"
+                } overflow-hidden items-center gap-2 py-2 border-b relative `}
               >
-                <IoMdClose />
+                <img
+                  src={item.content_object.image}
+                  alt={item.content_object.name}
+                  className={`${
+                    isGrid ? "w-full h-32" : "w-16 h-16 mr-4"
+                  } rounded-lg `}
+                />
+                <div className="flex-grow">
+                  <div className="flex items-center w-3/4 ">
+                    <div
+                      className={`${
+                        isGrid ? "text-base" : "text-lg"
+                      } font-semibold w-full  overflow-hidden text-ellipsis whitespace-nowrap`}
+                    >
+                      {item.content_object.name}
+                    </div>
+                    <div className="bg-red-500 text-white py-0.5 px-1.5 rounded-full text-xs">
+                      {item.content_object.count}
+                    </div>
+                  </div>
+                  <p className="text-sm text-gray-500 overflow-hidden whitespace-nowrap text-ellipsis">
+                    {item.type} • {item.location}
+                  </p>
+                  <div className="flex text-xs items-center  text-gray-500">
+                    <div className="mr-2 flex items-center gap-1 ">
+                      <IoHeartSharp
+                        size={isGrid ? 12 : 18}
+                        color={item.liked ? "red" : "black"}
+                      />
+                      <div className="overflow-hidden whitespace-nowrap text-ellipsis">
+                        {item.content_object.total_likes}
+                      </div>
+                    </div>
+                    <div className="flex text-xs items-center gap-1">
+                      <IoLocationSharp size={isGrid ? 12 : 18} color="black" />
+                      <div className="overflow-hidden whitespace-nowrap text-ellipsis">
+                        {item.content_object.distance}
+                      </div>
+                    </div>
+
+                    <div
+                      className={`text-xs flex items-center gap-1 ml-2 ${
+                        item.status === "Geöffnet"
+                          ? "text-green-500"
+                          : "text-red-500"
+                      }`}
+                    >
+                      {item.status === "Geöffnet" ? (
+                        <FaClock size={isGrid ? 12 : 18} />
+                      ) : (
+                        <IoMdCloseCircle size={isGrid ? 12 : 18} />
+                      )}
+                      <div className="overflow-hidden whitespace-nowrap text-ellipsis">
+                        {item.status}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  className={`absolute cursor-pointer bg-white rounded-full p-1 ${
+                    isGrid
+                      ? " top-3 right-1"
+                      : "top-1/2 -translate-y-1/2 right-5"
+                  }`}
+                >
+                  <IoMdClose />
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })
+        )}
       </div>
     </DrawerModal2>
   );
