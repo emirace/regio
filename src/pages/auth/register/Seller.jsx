@@ -6,9 +6,11 @@ import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "../../../components/Button";
 import { IoMdArrowBack } from "react-icons/io";
+import useAuth from "../../../hooks/auth";
 
 function Seller() {
   const navigate = useNavigate();
+  const { registerSeller } = useAuth();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -19,6 +21,8 @@ function Seller() {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -28,9 +32,17 @@ function Seller() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // Handle form submission logic here
+    try {
+      setLoading(true);
+      await registerSeller(formData);
+    } catch (error) {
+      setError("Enter valid information");
+    } finally {
+      setLoading(false);
+    }
   };
   return (
     <DrawerModal isRounded={true}>
@@ -196,9 +208,15 @@ function Seller() {
                 </Link>
               </label>
             </div>
-            <Button type="submit" className="w-full rounded-lg">
+            <Button
+              isLoading={loading}
+              disabled={loading}
+              type="submit"
+              className="w-full rounded-lg"
+            >
               Registrieren
             </Button>
+            {error && <div className="text-red-500 text-xs">{error}</div>}
           </form>
         </div>
         <Link to="#" className="text-primary mt-4">
