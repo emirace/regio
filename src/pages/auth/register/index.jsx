@@ -288,7 +288,12 @@ const Register = () => {
                 Passwort vergessen
               </Link>
             </div>
-            <Button type="submit" className="w-full rounded-lg">
+            <Button
+              isLoading={loading}
+              disabled={loading}
+              type="submit"
+              className="w-full rounded-lg"
+            >
               Anmelden
             </Button>
           </form>
